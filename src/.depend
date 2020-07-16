@@ -1,0 +1,8 @@
+Application.o: Application.cpp /usr/local/include/GL/glew.h \
+  /usr/local/include/GLFW/glfw3.h Renderer.h VertexBuffer.h \
+  IndexBuffer.h
+Renderer.o: Renderer.cpp Renderer.h /usr/local/include/GL/glew.h
+VertexBuffer.o: VertexBuffer.cpp VertexBuffer.h Renderer.h \
+  /usr/local/include/GL/glew.h
+IndexBuffer.o: IndexBuffer.cpp IndexBuffer.h Renderer.h \
+  /usr/local/include/GL/glew.h

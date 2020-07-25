@@ -5,17 +5,22 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "clang++ - Build and debug active file",
+            "name": "Build and launch (lldb)", //I named it Pusk because i can 
             "type": "cppdbg",
             "request": "launch",
-            "program": "${fileDirname}/${fileBasenameNoExtension}",
+            "program": "${workspaceFolder}/bin/gl-test", //path to your programs exe and exe name
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
             "externalConsole": false,
+            "preLaunchTask": "Build (make)",
             "MIMode": "lldb",
-            "preLaunchTask": "C/C++: clang++ build active file"
+            "logging": {
+                "trace": false,
+                "traceResponse": false,
+                "engineLogging": false
+            }
         }
     ]
 }

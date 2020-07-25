@@ -1,35 +1,35 @@
+SRC_DIR      := src
+INC_DIR      := include
+OBJ_DIR   	:= obj
+BIN_DIR  	:= bin
+RES_DIR      := res
+
+TARGET := $(BIN_DIR)/gl-test
+SOURCES := $(wildcard $(SRC_DIR)/*.cpp)
+OBJECTS := $(SOURCES:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
+
 CXX := clang++
-CXXFLAGS := -g -std=c++17 -Wall -Wextra -Werror
-LDFLAGS := -g
+CPPFLAGS := -g -I$(INC_DIR) -MMD -MP
+CXXFLAGS := -std=c++17 -Wall -Wextra 
+LDFLAGS := 
 LDLIBS := -framework OpenGL -lglew -lglfw
 
-SRC_DIR := ./src
-BUILD_DIR := ./build
-BIN_DIR := ./bin
-TARGET := gl-test
 
-SRC_EXT = cpp
-
-INCLUDE := -Iinclude/
-SOURCES := $(shell find $(SRC_DIR) -type f -name *.$(SRC_EXT))
-OBJECTS := $(patsubst $(SRC_DIR)/%.$(SRC_EXT), $(BUILD_DIR)/%.o, $(SOURCES))
-
-
-all: build $(BIN_DIR)/$(TARGET)
+all: $(TARGET)
 .PHONY: all
 
-$(BIN_DIR)/$(TARGET): $(OBJECTS)
+$(TARGET): $(OBJECTS) | $(BIN_DIR)
 	@echo "Linking the final executable"
-	$(CXX) $(CXXFLAGS) $(LDFLAGS) -o $@ $^ $(LDLIBS)
+	$(CXX) $(LDFLAGS) $^ $(LDLIBS) -o $@
 
-$(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
-	$(CXX) $(CXXFLAGS) $(INCLUDE) -c -o $@ $<
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp | $(OBJ_DIR)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $< -o $@ 
 
-build:
-	@mkdir -p $(BUILD_DIR)
-	@mkdir -p $(BIN_DIR)
-.PHONY: build
+$(BIN_DIR) $(OBJ_DIR):
+	mkdir -p $@
 
 clean:
-	rm -rf $(BUILD_DIR) $(BIN_DIR)
+	rm -rf $(BIN_DIR) $(OBJ_DIR)
 .PHONY: clean
+
+-include $(OBJECTS:.o=.d)
